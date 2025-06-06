@@ -89,20 +89,20 @@ Find `inputHandler` in client/main.lua and replace with:
 local function inputHandler()
     while DoesCamExist(previewCam) do
         if IsControlJustReleased(0, 188) then
-            previousButtonId = currentButtonId
-            currentButtonId -= 1
+            previousButtonId = currentButtonID
+            currentButtonID -= 1
 
-            if currentButtonId < 1 then
-                currentButtonId = #spawns
+            if currentButtonID < 1 then
+                currentButtonID = #spawns
             end
 
             updateScaleform()
         elseif IsControlJustReleased(0, 187) then
-            previousButtonId = currentButtonId
-            currentButtonId += 1
+            previousButtonId = currentButtonID
+            currentButtonID += 1
 
-            if currentButtonId > #spawns then
-                currentButtonId = 1
+            if currentButtonID > #spawns then
+                currentButtonID = 1
             end
 
             updateScaleform()
@@ -261,17 +261,17 @@ Find `InputHandler` in apartmentselect.lua function and replace with:
 local function InputHandler()
     while true do
         if IsControlJustReleased(0, 188) then
-            currentButtonId -= 1
-            if currentButtonId < 1 then currentButtonId = #sharedConfig.apartmentOptions end
+            currentButtonID -= 1
+            if currentButtonID < 1 then currentButtonID = #sharedConfig.apartmentOptions end
             SetupScaleform()
         elseif IsControlJustReleased(0, 187) then
-            currentButtonId += 1
-            if currentButtonId > #sharedConfig.apartmentOptions then currentButtonId = 1 end
+            currentButtonID += 1
+            if currentButtonID > #sharedConfig.apartmentOptions then currentButtonID = 1 end
             SetupScaleform()
         elseif IsControlJustReleased(0, 191) then
             local alert = lib.alertDialog({
                 header = locale('alert.apartment_selection'),
-                content = string.format(locale('alert.are_you_sure'), sharedConfig.apartmentOptions[currentButtonId].label),
+                content = string.format(locale('alert.are_you_sure'), sharedConfig.apartmentOptions[currentButtonID].label),
                 centered = true,
                 cancel = true
             })
@@ -279,10 +279,10 @@ local function InputHandler()
                 DoScreenFadeOut(500)
                 while not IsScreenFadedOut() do Wait(0) end
                 FreezeEntityPosition(cache.ped, false)
-                SetEntityCoords(cache.ped, sharedConfig.apartmentOptions[currentButtonId].enter.x, sharedConfig.apartmentOptions[currentButtonId].enter.y, sharedConfig.apartmentOptions[currentButtonId].enter.z - 2.0, false, false, false, false)
+                SetEntityCoords(cache.ped, sharedConfig.apartmentOptions[currentButtonID].enter.x, sharedConfig.apartmentOptions[currentButtonID].enter.y, sharedConfig.apartmentOptions[currentButtonID].enter.z - 2.0, false, false, false, false)
                 Wait(0)
                 -- TriggerServerEvent('qbx_properties:server:apartmentSelect', currentButtonId)
-                TriggerServerEvent("ps-housing:server:createNewApartment", sharedConfig.apartmentOptions[currentButtonId].label)
+                TriggerServerEvent("ps-housing:server:createNewApartment", sharedConfig.apartmentOptions[currentButtonID].label)
                 Wait(1000) -- Wait for player to spawn correctly so clothing menu can load in nice
                 TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
                 TriggerEvent('QBCore:Client:OnPlayerLoaded')
@@ -334,7 +334,7 @@ apartmentOptions = {
         description = 'An Apartment with an open view!',
         enter = vec3(-614.58, 46.52, 43.59)
     },
-}
+},
 ```
 
 Since the `properties_decorations` table depends on the `properties` table, you'll keep encountering errors unless you follow these steps:
